@@ -27,7 +27,7 @@ public class Conversation {
 
     private ConversationType conversationType;
 
-    @OneToMany(mappedBy = "conversation",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<ConversationParticipant> participants = new ArrayList<>();
 
@@ -47,4 +47,11 @@ public class Conversation {
 
     @Column(name = "last_message_content")
     private String lastMessageContent;
+
+    public void addParticipants(User user) {
+        participants.add(ConversationParticipant.builder()
+                .user(user)
+                .conversation(this)
+                .build());
+    }
 }

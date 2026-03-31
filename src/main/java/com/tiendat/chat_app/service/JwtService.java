@@ -65,7 +65,7 @@ public class JwtService {
 
         Date issueTime = new Date();
 
-        Date expiredTime = new Date(Instant.now().plus(3, ChronoUnit.SECONDS).toEpochMilli());
+        Date expiredTime = new Date(Instant.now().plus(14, ChronoUnit.DAYS).toEpochMilli());
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(userId)

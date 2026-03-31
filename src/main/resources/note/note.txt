@@ -1,0 +1,2 @@
+@EntityGraph: dùng để eager load tránh N+1 query
+attributePath để chỉ định relationships cần load
