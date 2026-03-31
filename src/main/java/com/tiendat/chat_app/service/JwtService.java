@@ -2,20 +2,21 @@ package com.tiendat.chat_app.service;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.tiendat.chat_app.common.TokenType;
+import com.tiendat.chat_app.configuration.CustomJwtDecoder;
 import com.tiendat.chat_app.exception.AppException;
 import com.tiendat.chat_app.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.stereotype.Service;
 import com.nimbusds.jwt.JWTClaimsSet;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j(topic = "JWT-SERVICE")
@@ -39,7 +40,8 @@ public class JwtService {
                 .issueTime(issueTime)
                 .jwtID(jwtId)
                 .expirationTime(expiredTime)
-                .claim("AUTHORITIES", authorities)
+                .claim("roles", authorities)
+                .claim("token_type", TokenType.ACCESS_TOKEN)
                 .build();
 
         Payload payload = new Payload(claimsSet.toJSONObject());
@@ -63,13 +65,14 @@ public class JwtService {
 
         Date issueTime = new Date();
 
-        Date expiredTime = new Date(Instant.now().plus(14, ChronoUnit.DAYS).toEpochMilli());
+        Date expiredTime = new Date(Instant.now().plus(3, ChronoUnit.SECONDS).toEpochMilli());
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(userId)
                 .issueTime(issueTime)
                 .jwtID(jwtId)
                 .expirationTime(expiredTime)
+                .claim("token_type",TokenType.REFRESH_TOKEN)
                 .build();
 
         Payload payload = new Payload(claimsSet.toJSONObject());
@@ -84,4 +87,6 @@ public class JwtService {
 
         return jwsObject.serialize();
     }
+
+
 }

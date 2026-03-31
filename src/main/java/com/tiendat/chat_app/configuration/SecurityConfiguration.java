@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer ->
                                 jwtConfigurer.decoder(jwtDecoder)
-//                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                         .accessDeniedHandler(new JwtAccessDeniedHandler()))
@@ -83,14 +83,14 @@ public class SecurityConfiguration {
         return basedCorsConfigurationSource;
     }
 
-//    @Bean
-//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-//        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-//        grantedAuthoritiesConverter.setAuthorityPrefix("");
-//
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-//        return jwtAuthenticationConverter;
-//    }
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+        grantedAuthoritiesConverter.setAuthorityPrefix("");
+
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+        return jwtAuthenticationConverter;
+    }
 }

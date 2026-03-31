@@ -11,7 +11,8 @@ public enum ErrorCode {
 
     USER_EXISTED(400, "User already existed", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(404, "User not found", HttpStatus.NOT_FOUND),
-    TOKEN_GENERATION_FAILED(500,  "Failed to generate JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+    TOKEN_GENERATION_FAILED(500,  "Failed to generate JWT token", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOKEN_INVALID(401, "Token is invalid", HttpStatus.UNAUTHORIZED);
 
     private final int code;
     private final String message;
