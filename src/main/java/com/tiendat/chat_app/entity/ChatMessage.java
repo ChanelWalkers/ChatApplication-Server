@@ -41,6 +41,6 @@ public class ChatMessage {
 
     @OneToMany(mappedBy = "message", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<MessageMedia> messageMedia = new ArrayList<>();
+    private List<MessageMedia> mediaFiles = new ArrayList<>();
 
 }

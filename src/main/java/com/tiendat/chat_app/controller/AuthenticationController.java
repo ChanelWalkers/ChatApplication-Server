@@ -19,7 +19,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @GetMapping("/login")
-    public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+    ApiResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         var data = authenticationService.login(request);
         return ApiResponse.<LoginResponse>builder()
                 .data(data)
@@ -29,7 +29,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<LoginResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+    ApiResponse<LoginResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
         var data = authenticationService.refresh(request);
         return ApiResponse.<LoginResponse>builder()
                 .data(data)

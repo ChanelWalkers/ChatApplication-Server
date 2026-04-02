@@ -23,7 +23,7 @@ public class ConversationController {
     private final ConversationService conversationService;
 
     @PostMapping
-    public ApiResponse<CreateConversationResponse> createConversation(@AuthenticationPrincipal Jwt jwt, @RequestBody @Valid CreateConversationRequest request) {
+    ApiResponse<CreateConversationResponse> createConversation(@AuthenticationPrincipal Jwt jwt, @RequestBody @Valid CreateConversationRequest request) {
         String creatorId = jwt.getSubject();
         var data = conversationService.createConversation(creatorId, request);
         return ApiResponse.<CreateConversationResponse>builder()
@@ -34,7 +34,7 @@ public class ConversationController {
     }
 
     @GetMapping("/my-conversations")
-    public ApiResponse<PageResponse<ConversationDetailResponse>> getMyConversation(@AuthenticationPrincipal Jwt jwt,
+    ApiResponse<PageResponse<ConversationDetailResponse>> getMyConversation(@AuthenticationPrincipal Jwt jwt,
                                                                                    @RequestParam(required = false, defaultValue = "1") int page,
                                                                                    @RequestParam(required = false, defaultValue = "10") int size) {
         var userId = jwt.getSubject();

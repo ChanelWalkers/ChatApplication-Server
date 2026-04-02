@@ -5,5 +5,6 @@ public enum MessageType {
     VIDEO,
     IMAGE,
     FILE,
+    LINK,
     SYSTEM
 }
