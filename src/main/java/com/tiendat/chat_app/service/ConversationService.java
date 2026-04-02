@@ -2,7 +2,9 @@ package com.tiendat.chat_app.service;
 
 import com.tiendat.chat_app.common.ConversationType;
 import com.tiendat.chat_app.dto.request.CreateConversationRequest;
+import com.tiendat.chat_app.dto.response.ConversationDetailResponse;
 import com.tiendat.chat_app.dto.response.CreateConversationResponse;
+import com.tiendat.chat_app.dto.response.PageResponse;
 import com.tiendat.chat_app.entity.Conversation;
 import com.tiendat.chat_app.entity.User;
 import com.tiendat.chat_app.exception.AppException;
@@ -11,6 +13,9 @@ import com.tiendat.chat_app.mapper.ConversationMapper;
 import com.tiendat.chat_app.repository.ConversationRepository;
 import com.tiendat.chat_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -80,5 +85,25 @@ public class ConversationService {
         conversationRepository.save(conversation);
 
         return ConversationMapper.toConversationResponse(creatorId, conversation);
+    }
+
+    public PageResponse<ConversationDetailResponse> getMyConversation(String userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        Page<Conversation> conversationPage = conversationRepository.findAllByUserId(userId, pageable);
+
+        List<Conversation> conversations = conversationPage.getContent();
+
+        List<ConversationDetailResponse> conversationDetailResponses = conversations.stream()
+                .map(conversation -> ConversationMapper.toConversationDetailResponse(userId, conversation)).toList();
+
+        return PageResponse.<ConversationDetailResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .content(conversationDetailResponses)
+                .totalElements(conversationPage.getTotalElements())
+                .totalPages(conversationPage.getTotalPages())
+                .build();
+
     }
 }
