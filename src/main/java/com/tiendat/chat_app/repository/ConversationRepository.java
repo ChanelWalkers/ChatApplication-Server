@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,9 +18,23 @@ public interface ConversationRepository extends JpaRepository<Conversation, Stri
     @EntityGraph(attributePaths = {"participants", "participants.user"})
     Optional<Conversation> findByParticipantHash(String participantHash);
 
-    @EntityGraph(attributePaths = {"participants", "participants.user"})
-    @Query("SELECT DISTINCT c FROM Conversation c JOIN c.participants p WHERE p.user.id = :userId ORDER BY c.lastMessageTime DESC NULLS LAST")
-    Page<Conversation> findAllByUserId(@Param("userId") String userId, Pageable pageable);
+//    @EntityGraph(attributePaths = {"participants", "participants.user"})
+//    @Query("SELECT DISTINCT c FROM Conversation c JOIN c.participants p WHERE p.user.id = :userId ORDER BY c.lastMessageTime DESC NULLS LAST")
+//    Page<Conversation> findAllByUserId(@Param("userId") String userId, Pageable pageable);
+
+    @Query("SELECT DISTINCT c FROM Conversation c " +
+            "JOIN c.participants p " +
+            "WHERE p.user.id = :userId " +
+            "ORDER BY c.lastMessageTime DESC NULLS LAST"
+    )
+    Page<Conversation> findAllByUserId(@Param("userId") String userId,Pageable pageable);
+
+    @Query("SELECT DISTINCT c FROM Conversation c " +
+            "LEFT JOIN FETCH c.participants p " +
+            "LEFT JOIN FETCH p.user " +
+            "WHERE c.id IN :conversationIds")
+    List<Conversation> findByIdInWithParticipants(@Param("conversationIds") List<String> conversationIds);
+
 
     /**
      * Query: SELECT C FROM Conversation c

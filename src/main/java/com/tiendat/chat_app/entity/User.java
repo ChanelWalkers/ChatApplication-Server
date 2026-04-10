@@ -32,6 +32,13 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "two_fa_enabled")
+    @Builder.Default
+    private Boolean twoFaEnabled = false;
+
+    @Column(name = "two_fa_secret")
+    private String twoFaSecret;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private List<UserHasRole> userHasRoles = new ArrayList<>();

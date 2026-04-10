@@ -35,6 +35,7 @@ public class SecurityConfiguration {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/**",
             "/api/v1/users",
+            "/api/v1/2fa/verify-otp",
             "/ws/**"
     };
 

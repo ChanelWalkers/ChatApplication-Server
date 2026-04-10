@@ -1,2 +1,4 @@
 @EntityGraph: dùng để eager load tránh N+1 query
 attributePath để chỉ định relationships cần load
+
+JWT (OAuth2 Resource Server) cua Nimbus chi dung duoc va decode duoc cho 1 secret key

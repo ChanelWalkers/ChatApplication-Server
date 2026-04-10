@@ -92,9 +92,14 @@ public class ConversationService {
 
         Page<Conversation> conversationPage = conversationRepository.findAllByUserId(userId, pageable);
 
-        List<Conversation> conversations = conversationPage.getContent();
+        List<String> conversationIds = conversationPage.getContent().stream()
+                .map(Conversation::getId)
+                .toList();
 
-        List<ConversationDetailResponse> conversationDetailResponses = conversations.stream()
+        List<Conversation> conversationsWithParticipants = conversationIds.isEmpty() ?
+                List.of() : conversationRepository.findByIdInWithParticipants(conversationIds);
+
+        List<ConversationDetailResponse> conversationDetailResponses = conversationsWithParticipants.stream()
                 .map(conversation -> ConversationMapper.toConversationDetailResponse(userId, conversation)).toList();
 
         return PageResponse.<ConversationDetailResponse>builder()

@@ -43,6 +43,13 @@ public class AuthenticationService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
+        if(Boolean.TRUE.equals(user.getTwoFaEnabled())) {
+            return LoginResponse.builder()
+                    .twoFaToken(jwtService.generateTwoFaToken(user.getId()))
+                    .userId(user.getId())
+                    .build();
+        }
+
         String accessToken = jwtService.generateAccessToken(user.getId(), authorities);
         String refreshToken = jwtService.generateRefreshToken(user.getId());
 
